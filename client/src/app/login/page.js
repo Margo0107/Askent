@@ -1,22 +1,19 @@
 "use client";
-
-import { useState } from "react";
+//login page
 import AuthorForm from "../components/UI/AuthForm";
+import { useAuthForm } from "../components/hooks/useAuthForm";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [userName, setUserName] = useState("");
-
-  const [errors, setErrors] = useState({
-    nameError: "",
-    emailError: "",
-    passwordError: "",
-  });
-  const nameRegex = /^[A-Za-z0-9_]{1,8}$/;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{8,}$/;
+  const {
+    userName,
+    setUserName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    errors,
+    validate,
+  } = useAuthForm;
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -41,23 +38,6 @@ export default function Login() {
     if (data.token) {
       localStorage.setItem("token", data.token);
     }
-  };
-
-  const validate = () => {
-    let newErrors = {};
-
-    if (!nameRegex.test(userName)) {
-      newErrors.nameError = "Имя: максимум 8 символов, буквы, цифры и _";
-    }
-    if (!emailRegex.test(email)) {
-      newErrors.emailError = "Некорректный email";
-    }
-    if (!passwordRegex.test(password)) {
-      newErrors.passwordError =
-        "Пароль: 8+ символов, A-Z, a-z, цифра и спецсимвол";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
 
   return (
