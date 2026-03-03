@@ -16,6 +16,7 @@ const AuthorForm = (props) => {
     titleH1,
     titleBtn,
     onSubmit,
+    children,
     onNameChange,
     onEmailChange,
     onPasswordChange,
@@ -29,8 +30,9 @@ const AuthorForm = (props) => {
     <div className="min-h-screen flex items-center justify-center bg-[url(/bg-register.jpg)] bg-cover bg-center">
       <form
         onSubmit={onSubmit}
-        className="px-[15px] flex justify-between gap-6 flex-col w-[430px] min-h-[390px]"
+        className="px-[15px] flex justify-between gap-8 flex-col w-[430px] min-h-[390px]"
       >
+        {children}
         <h1 className="text-4xl font-bold text-center">{titleH1}</h1>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">

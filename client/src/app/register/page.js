@@ -1,9 +1,23 @@
 "use client";
 //registration page
+import { useRouter } from "next/navigation";
 import AuthorForm from "../components/UI/AuthForm";
+import { useAuthApi } from "../components/hooks/useAuthApi";
 import { useAuthForm } from "../components/hooks/useAuthForm";
+import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Register() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      router.push("/home");
+    }
+  }, [router]);
+
   const {
     userName,
     setUserName,
@@ -13,30 +27,29 @@ export default function Register() {
     setPassword,
     errors,
     validate,
-  } = useAuthForm;
+  } = useAuthForm();
+
+  const { register } = useAuthApi();
 
   const handlRegister = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    const token = localStorage.getItem("token");
-
-    const res = await fetch("http://localhost:5000/api/author/register", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
+    try {
+      const data = await register({
         userEmail: email,
         userPassword: password,
         userName: userName,
-      }),
-    });
-    const data = await res.json();
-    console.log(data);
-    if (data.token) {
-      localStorage.setItem("token", data.token);
+      });
+
+      console.log(data);
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        router.push("/home");
+      }
+    } catch (error) {
+      console.log(error.messsage);
     }
   };
   return (
@@ -52,7 +65,15 @@ export default function Register() {
         onEmailChange={(e) => setEmail(e.target.value)}
         onPasswordChange={(e) => setPassword(e.target.value)}
         errors={errors}
-      />
+      >
+        {" "}
+        <p className="text-center text-lg">
+          Уже есть аккаунт?{" "}
+          <Link href={"/login"} className="text-violet-600">
+            Войти
+          </Link>
+        </p>
+      </AuthorForm>
     </>
   );
 }

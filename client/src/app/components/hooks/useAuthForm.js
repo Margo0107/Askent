@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 export const useAuthForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -6,7 +7,7 @@ export const useAuthForm = () => {
 
   const [errors, setErrors] = useState({});
 
-  const nameRegex = /^[A-Za-z0-9_]{1,8}$/;
+  const nameRegex = /^[A-Za-z0-9_]{7,12}$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{8,}$/;
@@ -15,7 +16,7 @@ export const useAuthForm = () => {
     let newErrors = {};
 
     if (!nameRegex.test(userName)) {
-      newErrors.nameError = "Имя: максимум 8 символов, буквы, цифры и _";
+      newErrors.nameError = "Имя: минимум 7, максимум 8 символов, буквы, цифры и _";
     }
     if (!emailRegex.test(email)) {
       newErrors.emailError = "Некорректный email";
@@ -28,7 +29,7 @@ export const useAuthForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  return (
+  return {
     userName,
     setUserName,
     email,
@@ -36,6 +37,6 @@ export const useAuthForm = () => {
     password,
     setPassword,
     errors,
-    validate
-  );
+    validate,
+  };
 };

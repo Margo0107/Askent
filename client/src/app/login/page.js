@@ -1,9 +1,24 @@
 "use client";
 //login page
+
+import { useRouter } from "next/navigation";
 import AuthorForm from "../components/UI/AuthForm";
+import { useAuthApi } from "../components/hooks/useAuthApi";
 import { useAuthForm } from "../components/hooks/useAuthForm";
+import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Login() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      router.push("/home");
+    }
+  }, [router]);
+
   const {
     userName,
     setUserName,
@@ -13,30 +28,29 @@ export default function Login() {
     setPassword,
     errors,
     validate,
-  } = useAuthForm;
+  } = useAuthForm();
+
+  const { login } = useAuthApi();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    const token = localStorage.getItem("token");
-
-    const res = await fetch("http://localhost:5000/api/author/login", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
+    try {
+      const data = await login({
         userEmail: email,
         userPassword: password,
         userName: userName,
-      }),
-    });
-    const data = await res.json();
-    console.log(data);
-    if (data.token) {
-      localStorage.setItem("token", data.token);
+      });
+
+      console.log(data);
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        router.push("/home");
+      }
+    } catch (error) {
+      console.log(error.messsage);
     }
   };
 
@@ -53,7 +67,15 @@ export default function Login() {
         onEmailChange={(e) => setEmail(e.target.value)}
         onPasswordChange={(e) => setPassword(e.target.value)}
         errors={errors}
-      />
+      >
+        {" "}
+        <p className="text-center text-lg">
+          Нет аккаунта?{" "}
+          <Link href={"/register"} className="text-violet-600">
+            Зарегистрироваться
+          </Link>
+        </p>{" "}
+      </AuthorForm>
     </>
   );
 }
