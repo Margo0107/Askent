@@ -1,6 +1,7 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const authorRoutes = require("./routes/authorRoutes");
+const questionRoutes = require("./routes/questionRoutes");
 const cors = require("cors");
 
 require("dotenv").config();
@@ -14,6 +15,7 @@ app.use(cors());
 connectDB();
 
 app.use("/api/author", authorRoutes);
+app.use("/api/question", questionRoutes);
 
 app.listen(PORT, () => {
   console.log("server on starded on 5000");

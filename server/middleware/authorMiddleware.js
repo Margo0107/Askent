@@ -6,14 +6,14 @@ const authorMiddleWare = (req, res, next) => {
     return res.status(401).json({ message: "not token provided" });
   }
   const token = authorHeader.split(" ")[1];
-  
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    req.userId = decoded.userId;
     next();
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "server error" });
+    res.status(401).json({ message: "token wxpired!" });
   }
 };
 module.exports = authorMiddleWare;

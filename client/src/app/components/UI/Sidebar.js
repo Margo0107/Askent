@@ -24,48 +24,46 @@ export default function Sidebar() {
   };
   return (
     <>
-      <div className="flex h-screen">
-        <RxHamburgerMenu
-          size={21}
-          onClick={showAside}
-          className="md:hidden fixed top-15 z-50 left-5 cursor-pointer"
-        />
+      <RxHamburgerMenu
+        size={21}
+        onClick={showAside}
+        className="xl:hidden visible fixed md:top-17 top-15 z-50 left-5 cursor-pointer"
+      />
 
-        <aside
-          className={`fixed top-13 left-0 h-screen w-64 flex flex-col justify-between gap-4 p-5 py-10 bg-white/60 border-r-2 border-violet-300 transition-transform duration-300
+      <aside
+        className={`fixed md:top-15 top-13 left-0 z-30 h-screen w-64 flex flex-col justify-between p-5 py-10 lg:bg-white/50 bg-white/50 backdrop-blur-md border-r-2 border-violet-300 transition-transform duration-300
                ${isOpen ? "translate-x-0" : "-translate-x-full"}
-                md:translate-x-0`}
-        >
-          <div className="flex flex-col gap-3">
-            {/* link feed */}
-            <Link href="/home" className={linkClass("/home")}>
-              <HiOutlineHome size={21} />
-              Feed
-            </Link>
-            {/* link create a question */}
-            <Link href="/home/create" className={linkClass("/create")}>
-              <MdOutlineCreate size={21} />
-              Ask Question
-            </Link>
-            {/* link notification */}
-            <Link
-              href="/home/>notification"
-              className={linkClass("/home/notification")}
-            >
-              <IoNotificationsOutline size={21} />
-              notifications
-            </Link>
-            {/* link report */}
-            <Link href="/home/report" className={linkClass("/home/report")}>
-              <MdOutlineReport size={21} />
-              Support
-            </Link>
-          </div>
-          <p className="text-xs text-gray-500">
-            © 2026 Askent. All rights reserved.
-          </p>
-        </aside>
-      </div>
+                xl:translate-x-0`}
+      >
+        <div className="flex flex-col gap-3">
+          {/* link feed */}
+          <Link href="/home" className={linkClass("/home")}>
+            <HiOutlineHome size={21} />
+            Feed
+          </Link>
+          {/* link create a question */}
+          <Link href="/home/create" className={linkClass("/home/create")}>
+            <MdOutlineCreate size={21} />
+            Ask Question
+          </Link>
+          {/* link notification */}
+          <Link
+            href="/home/>notification"
+            className={linkClass("/home/notification")}
+          >
+            <IoNotificationsOutline size={21} />
+            notifications
+          </Link>
+          {/* link report */}
+          <Link href="/home/report" className={linkClass("/home/report")}>
+            <MdOutlineReport size={21} />
+            Support
+          </Link>
+        </div>
+        <p className="text-xs text-gray-500">
+          © 2026 Askent. All rights reserved.
+        </p>
+      </aside>
     </>
   );
 }
