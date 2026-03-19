@@ -5,12 +5,10 @@ import { HiOutlineHome } from "react-icons/hi";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { MdOutlineCreate } from "react-icons/md";
 import { usePathname } from "next/navigation";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { useState } from "react";
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen }) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+
   const linkClass = (path) =>
     `p-3 py-2 cursor-pointer flex justify-items-center gap-2 rounded-lg cursor-pointer hover:bg-violet-100
   ${
@@ -19,19 +17,10 @@ export default function Sidebar() {
       : "bg-violet-50"
   }`;
 
-  const showAside = () => {
-    setIsOpen(!isOpen);
-  };
   return (
     <>
-      <RxHamburgerMenu
-        size={21}
-        onClick={showAside}
-        className="xl:hidden visible fixed md:top-17 top-15 z-50 left-5 cursor-pointer"
-      />
-
       <aside
-        className={`fixed md:top-15 top-13 left-0 z-30 h-screen w-64 flex flex-col justify-between p-5 py-10 lg:bg-white/50 bg-white/50 backdrop-blur-md border-r-2 border-violet-300 transition-transform duration-300
+        className={`fixed md:top-14 top-12 left-0 z-30 h-screen w-64 flex flex-col justify-between p-5 py-10 lg:bg-white/50 bg-white/50 backdrop-blur-md border-r-2 border-violet-300 transition-transform duration-300
                ${isOpen ? "translate-x-0" : "-translate-x-full"}
                 xl:translate-x-0`}
       >

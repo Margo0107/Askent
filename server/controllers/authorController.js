@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
     await newUser.save();
 
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "5d",
     });
     console.log(newUser);
     res.status(201).json({ message: "user saved!", token });
@@ -45,9 +45,16 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Wrong password" });
     }
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "5d",
     });
-    return res.status(200).json({ message: "Login successful", token });
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+      user: {
+        _id: user._id,
+        userName: user.userName,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "server error" });

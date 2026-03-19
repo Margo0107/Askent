@@ -47,6 +47,7 @@ export default function Login() {
 
       if (data.token) {
         localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.user._id);
         router.push("/home");
       }
     } catch (error) {
