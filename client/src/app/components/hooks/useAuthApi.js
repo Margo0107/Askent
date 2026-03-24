@@ -5,7 +5,6 @@ export const useAuthApi = () => {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        // Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     });
@@ -21,7 +20,6 @@ export const useAuthApi = () => {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        // Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     });
@@ -32,5 +30,28 @@ export const useAuthApi = () => {
     }
     return result;
   };
-  return { login, register };
+
+  const uploadAvatar = async (file) => {
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    const token = localStorage.getItem("token");
+
+    const res = await fetch("http://localhost:5000/api/author/upload-avatar", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    const result = await res.json();
+    console.log(result);
+
+    if (!res.ok) {
+      throw new Error(result.message);
+    }
+    return result;
+  };
+  return { login, register, uploadAvatar };
 };

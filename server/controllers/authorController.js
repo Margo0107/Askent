@@ -61,6 +61,27 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.uploadAvatar = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "no file uploaded" });
+    }
+
+    const avatarPath = `/api/author/uploads/${req.file.filename}`;
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { avatar: avatarPath },
+      { new: true },
+    );
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "server error" });
+  }
+};
+
 exports.getHome = async (req, res) => {
   const user = await User.findById(req.user.userId).select("-userPassword");
   res.json({ message: "welcome home", user });

@@ -2,17 +2,24 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { BsFillCameraFill } from "react-icons/bs";
+import { useAuthApi } from "../hooks/useAuthApi";
+import Avatar from "./Avatar";
 
 export default function ProfileMenu({ logout }) {
   const [user, setUser] = useState(null);
   const fileInputFef = useRef(null);
+  const { uploadAvatar } = useAuthApi();
 
   const handleClick = () => {
     fileInputFef.current.click();
   };
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const file = e.target.files[0];
+    if (!file) return;
+
+    const updateUser = await uploadAvatar(file);
+    setUser(updateUser);
   };
 
   useEffect(() => {
@@ -30,9 +37,9 @@ export default function ProfileMenu({ logout }) {
   }, []);
 
   return (
-    <div className="absolute md:top-14 top-12 md:left-[-150] left-[-80] bg-white shadow-lg rounded-xl md:p-5 p-3 w-40 md:w-50">
+    <div className="absolute md:top-14 top-12 md:left-[-150px] left-[-80px] bg-white shadow-lg rounded-xl md:p-5 p-3 w-40 md:w-50">
       {user && (
-        <div kay={user._id} className="flex flex-col items-start gap-2">
+        <div key={user._id} className="flex flex-col items-start gap-2">
           <div className="relative">
             <div className="absolute bottom-0 md:left-8 left-6 bg-violet-600 rounded-full p-1 cursor-pointer">
               {" "}
@@ -42,13 +49,11 @@ export default function ProfileMenu({ logout }) {
                 className="text-white position top-10 md:left-2 left-2 w-3 md:w-5 h-3 md:h-5"
               />
             </div>
-            <Image
-              src="/auth-img.png"
-              alt="avatar"
-              width={60}
-              height={60}
+
+            <Avatar
+              src={user?.avatar}
               onClick={handleClick}
-              className="rounded-full w-10 md:w-15 h-10 md:h-15"
+              className="w-10 h-10 md:w-14 md:h-14"
             />
           </div>
 
@@ -60,7 +65,9 @@ export default function ProfileMenu({ logout }) {
           />
 
           <h1 className="font-semibold">{user?.userName}</h1>
-          <p className="text-sm text-gray-500 text-[13px] md:text-[15px]">{user?.userEmail}</p>
+          <p className="text-sm text-gray-500 text-[13px] md:text-[15px]">
+            {user?.userEmail}
+          </p>
           <button
             onClick={logout}
             className="px-3 py-1 bg-violet-600 text-white hover:bg-violet-400 transition duration-400 rounded cursor-pointer"

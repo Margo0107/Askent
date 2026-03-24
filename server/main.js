@@ -16,6 +16,7 @@ app.use(cors());
 connectDB();
 
 app.use("/api/author", authorRoutes);
+app.use("/uploads", express.static("uploads"));
 app.use("/api/question", questionRoutes);
 app.use("/api/answer", answerRoutes);
 

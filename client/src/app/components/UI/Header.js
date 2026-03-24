@@ -1,16 +1,24 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProfileMenu from "./ProfileMenu";
 import { IoIosSearch } from "react-icons/io";
 import { RxHamburgerMenu } from "react-icons/rx";
 import Sidebar from "./Sidebar";
+import { useAuthApi } from "../hooks/useAuthApi";
+import Avatar from "./Avatar";
+import { useUser } from "@/app/context/UserContext";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [isOpen, setIsOpenBurger] = useState(false);
+
+  const { user } = useUser();
+  console.log("user: ", user);
+  // const [user, setUser] = useState(null);
   const router = useRouter();
+  // const { uploadAvatar } = useAuthApi;
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -20,6 +28,14 @@ export default function Header() {
   const showAside = () => {
     setIsOpenBurger(!isOpen);
   };
+
+  // useEffect(() => {
+  //   const loadAvatar = async () => {
+  //     const data = await uploadAvatar();
+  //     setUser(data.user.avatar);
+  //   };
+  //   loadAvatar();
+  // }, []);
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-40 px-6 py-2 bg-white/20 backdrop-blur border-b-1 border-violet-300">
@@ -32,6 +48,7 @@ export default function Header() {
               width={40}
               height={40}
             />
+
             <h2 className="font-bold text-2xl lg:text-3xl tracking-[-1.5px] text-transparent bg-linear-65 from-indigo-800 to-fuchsia-500 bg-clip-text">
               Askent
             </h2>
@@ -55,12 +72,16 @@ export default function Header() {
                 setOpen(!open);
               }}
             >
-              <Image
+              {/* <Image
                 className="rounded-full w-8 h-8 md:w-10 md:h-10"
                 src="/auth-img.png"
                 alt="icon-profile"
                 width={40}
                 height={40}
+              /> */}
+              <Avatar
+                src={user?.avatar}
+                className="rounded-full w-8 h-8 md:w-10 md:h-10"
               />
             </button>
             {open && <ProfileMenu logout={logout} />}
