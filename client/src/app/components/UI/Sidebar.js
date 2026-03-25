@@ -37,7 +37,7 @@ export default function Sidebar({ isOpen }) {
           </Link>
           {/* link notification */}
           <Link
-            href="/home/>notification"
+            href="/home/notification"
             className={linkClass("/home/notification")}
           >
             <IoNotificationsOutline size={21} />

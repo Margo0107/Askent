@@ -1,4 +1,5 @@
 const Question = require("../models/Question");
+const Notification = require("../models/Notification");
 //creating posts
 exports.createQuestion = async (req, res) => {
   try {
@@ -24,7 +25,9 @@ exports.createQuestion = async (req, res) => {
 //getting all posts
 exports.getQuestion = async (req, res) => {
   try {
-    const questions = await Question.find().sort({ createAt: -1 });
+    const questions = await Question.find()
+      .populate("authorId", "userName avatar")
+      .sort({ createAt: -1 });
     res.json(questions);
   } catch (error) {
     res.status(500).json({ message: "server error" });
@@ -49,6 +52,15 @@ exports.likeQuestion = async (req, res) => {
     } else {
       questions.likes.push(userId);
     }
+    if (!alredyLiked && questions.authorId.toString() !== userId) {
+      await Notification.create({
+        type: "like",
+        userId: req.userId,
+        targetUserId: questions.authorId,
+        questionId: questions._id,
+      });
+    }
+
     await questions.save();
     res.json(questions);
   } catch (error) {

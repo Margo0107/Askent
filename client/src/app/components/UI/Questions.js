@@ -1,12 +1,16 @@
 "use client";
-import Image from "next/image";
+
 import Link from "next/link";
 import { RiPokerHeartsLine } from "react-icons/ri";
 import { RiPokerHeartsFill } from "react-icons/ri";
 import { TbMessageCircle } from "react-icons/tb";
+import Avatar from "./Avatar";
+import { useUser } from "@/app/context/UserContext";
 
 export default function Questions(props) {
   const { q, userId, handleLikes } = props;
+
+  const { user } = useUser();
 
   console.log("QUESTION:", q);
 
@@ -17,12 +21,9 @@ export default function Questions(props) {
     <div className="w-full flex flex-col gap-6">
       <div className="w-full flex flex-col justify-between sm:gap-5 gap-3 bg-white/50 backdrop-blur-md sm:p-5 p-4 sm:-py-4 py-3 rounded-lg">
         <div className="flex items-center gap-4">
-          <Image
-            className="rounded-full w-8 h-8 md:w-10 md:h-10"
-            src="/auth-img.png"
-            alt="icon-profile"
-            width={40}
-            height={40}
+          <Avatar
+            src={q.authorId?.avatar}
+            className={`w-8 h-8 md:w-10 md:h-10`}
           />
           <h3 className="sm:text-xl text-lg cursor-pointer">Admin_01</h3>
           <span className="text-sm text-slate-600">

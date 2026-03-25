@@ -38,7 +38,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post(
-  "/upload-avatar", 
+  "/upload-avatar",
   authorMiddleWare,
   upload.single("avatar"),
   uploadAvatar,

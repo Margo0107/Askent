@@ -4,11 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { BsFillCameraFill } from "react-icons/bs";
 import { useAuthApi } from "../hooks/useAuthApi";
 import Avatar from "./Avatar";
+import { useUser } from "@/app/context/UserContext";
 
 export default function ProfileMenu({ logout }) {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const fileInputFef = useRef(null);
   const { uploadAvatar } = useAuthApi();
+
+  const { user, setUser } = useUser();
 
   const handleClick = () => {
     fileInputFef.current.click();
@@ -22,19 +25,19 @@ export default function ProfileMenu({ logout }) {
     setUser(updateUser);
   };
 
-  useEffect(() => {
-    const loadUser = async () => {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/author/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const user = await res.json();
-      setUser(user);
-    };
-    loadUser();
-  }, []);
+  // useEffect(() => {
+  //   const loadUser = async () => {
+  //     const token = localStorage.getItem("token");
+  //     const res = await fetch("http://localhost:5000/api/author/me", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     const user = await res.json();
+  //     setUser(user);
+  //   };
+  //   loadUser();
+  // }, []);
 
   return (
     <div className="absolute md:top-14 top-12 md:left-[-150px] left-[-80px] bg-white shadow-lg rounded-xl md:p-5 p-3 w-40 md:w-50">
@@ -65,7 +68,7 @@ export default function ProfileMenu({ logout }) {
           />
 
           <h1 className="font-semibold">{user?.userName}</h1>
-          <p className="text-sm text-gray-500 text-[13px] md:text-[15px]">
+          <p className="text-sm text-gray-500 text-[13px] md:text-[15px] break-all">
             {user?.userEmail}
           </p>
           <button

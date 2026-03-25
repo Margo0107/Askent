@@ -69,7 +69,7 @@ exports.uploadAvatar = async (req, res) => {
       return res.status(400).json({ message: "no file uploaded" });
     }
 
-    const avatarPath = `/api/author/uploads/${req.file.filename}`;
+    const avatarPath = `/uploads/${req.file.filename}`;
 
     const user = await User.findByIdAndUpdate(
       userId,

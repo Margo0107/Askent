@@ -6,7 +6,8 @@ import { useAnswerApi } from "../hooks/useAnswer";
 import { RiPokerHeartsLine } from "react-icons/ri";
 import { RiPokerHeartsFill } from "react-icons/ri";
 import { TbMessageCircle } from "react-icons/tb";
-import Image from "next/image";
+import { useUser } from "@/app/context/UserContext";
+import Avatar from "./Avatar";
 
 export default function AnswerCard({
   answer,
@@ -20,6 +21,7 @@ export default function AnswerCard({
   const [showReply, setShowReply] = useState(false);
 
   const { createAnswer } = useAnswerApi();
+  const { user } = useUser();
 
   const isLiked =
     userId && answer.likes.some((likeId) => likeId.toString() === userId);
@@ -40,13 +42,7 @@ export default function AnswerCard({
     <>
       <div className="p-2 rounded-lg bg-violet-100/50 border-t border-violet-300 flex flex-col gap-4">
         <div className="flex items-center gap-3 py-2">
-          <Image
-            className="rounded-full w-8 h-8 md:w-10 md:h-10"
-            src="/auth-img.png"
-            alt="icon-profile"
-            width={40}
-            height={40}
-          />
+          <Avatar src={user?.avatar} className={`w-8 h-8 md:w-10 md:h-10`} />
           <h3 className="sm:text-xl text-lg cursor-pointer">
             {answer?.authorId?.userName || "user"}
           </h3>
