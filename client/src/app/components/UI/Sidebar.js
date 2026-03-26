@@ -5,9 +5,22 @@ import { HiOutlineHome } from "react-icons/hi";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { MdOutlineCreate } from "react-icons/md";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useNotificationApi } from "../hooks/useNotificationApi";
 
 export default function Sidebar({ isOpen }) {
   const pathname = usePathname();
+
+  const { getNotificationCount } = useNotificationApi();
+  const [countNotifi, setCountNotifi] = useState(0);
+
+  useEffect(() => {
+    const load = async () => {
+      const data = await getNotificationCount();
+      setCountNotifi(data.count);
+    };
+    load();
+  }, []);
 
   const linkClass = (path) =>
     `p-3 py-2 cursor-pointer flex justify-items-center gap-2 rounded-lg cursor-pointer hover:bg-violet-100
@@ -42,7 +55,11 @@ export default function Sidebar({ isOpen }) {
           >
             <IoNotificationsOutline size={21} />
             notifications
+            <div className="rounded-full bg-violet-500 text-violet-50 text-sm p-[5px] py-[2px] font-thin">
+              {countNotifi > 99 ? "99+" : countNotifi}
+            </div>
           </Link>
+
           {/* link report */}
           <Link href="/home/report" className={linkClass("/home/report")}>
             <MdOutlineReport size={21} />

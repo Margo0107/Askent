@@ -5,11 +5,14 @@ import { useRouter } from "next/navigation";
 import AuthorForm from "../components/UI/AuthForm";
 import { useAuthApi } from "../components/hooks/useAuthApi";
 import { useAuthForm } from "../components/hooks/useAuthForm";
+import { useUser } from "../context/UserContext";
 import Link from "next/link";
 import { useEffect } from "react";
 
 export default function Login() {
   const router = useRouter();
+
+  const { loadUser } = useUser();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -40,7 +43,6 @@ export default function Login() {
       const data = await login({
         userEmail: email,
         userPassword: password,
-        userName: userName,
       });
 
       console.log(data);
@@ -48,10 +50,12 @@ export default function Login() {
       if (data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userId", data.user._id);
+
+        await loadUser();
         router.push("/home");
       }
     } catch (error) {
-      console.log(error.messsage);
+      console.log(error.message);
     }
   };
 

@@ -16,5 +16,19 @@ export const useNotificationApi = () => {
     }
     return data;
   };
-  return { getNotification };
+
+  const getNotificationCount = async () => {
+    const token = localStorage.getItem("token");
+    const res = await fetch("http://localhost:5000/api/notifications/count", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+    return data;
+  };
+  return { getNotification, getNotificationCount };
 };

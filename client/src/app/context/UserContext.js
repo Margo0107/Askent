@@ -24,7 +24,7 @@ export const UserProvider = ({ children }) => {
     loadUser();
   }, []);
   return (
-    <UserContxt.Provider value={{ user, setUser }}>
+    <UserContxt.Provider value={{ user, setUser, loadUser }}>
       {children}
     </UserContxt.Provider>
   );

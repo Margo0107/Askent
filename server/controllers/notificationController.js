@@ -13,3 +13,13 @@ exports.notification = async (req, res) => {
     res.status(500).json({ message: "server error" });
   }
 };
+exports.NotificationCount = async (req, res) => {
+  try {
+    const count = await Notification.countDocuments({
+      targetUserId: req.userId,
+    });
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ message: "server error" });
+  }
+};

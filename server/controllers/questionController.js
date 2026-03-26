@@ -49,10 +49,24 @@ exports.likeQuestion = async (req, res) => {
 
     if (alredyLiked) {
       questions.likes.pull(userId);
+
+      await Notification.findOneAndDelete({
+        userId: req.userId,
+        targetUserId: questions.authorId,
+        questionId: questions._id,
+        type: "like",
+      });
     } else {
       questions.likes.push(userId);
     }
-    if (!alredyLiked && questions.authorId.toString() !== userId) {
+
+    const existing = await Notification.findOne({
+      userId: req.userId,
+      questionId: questions._id,
+      type: "like",
+    });
+
+    if (!alredyLiked && questions.authorId.toString() !== userId && !existing) {
       await Notification.create({
         type: "like",
         userId: req.userId,
@@ -62,7 +76,12 @@ exports.likeQuestion = async (req, res) => {
     }
 
     await questions.save();
-    res.json(questions);
+
+    const updated = await Question.findById(questions._id).populate(
+      "authorId",
+      "userName avatar",
+    );
+    res.json(updated);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "like error" });
