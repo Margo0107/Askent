@@ -54,14 +54,16 @@ export default function Sidebar({ isOpen }) {
             className={linkClass("/home/notification")}
           >
             <IoNotificationsOutline size={21} />
-            notifications
-            <div className="rounded-full bg-violet-500 text-violet-50 text-sm p-[5px] py-[2px] font-thin">
-              {countNotifi > 99 ? "99+" : countNotifi}
-            </div>
+            Notifications
+            {countNotifi > 0 && (
+              <div className="rounded-full bg-violet-500 text-violet-50 text-sm p-[5px] py-[2px] font-thin">
+                {countNotifi > 99 ? "99+" : countNotifi}
+              </div>
+            )}
           </Link>
 
           {/* link report */}
-          <Link href="/home/report" className={linkClass("/home/report")}>
+          <Link href="/home/support" className={linkClass("/home/support")}>
             <MdOutlineReport size={21} />
             Support
           </Link>

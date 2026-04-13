@@ -56,9 +56,20 @@ export const useQuestionApi = () => {
     });
     const data = await res.json();
     if (!res.ok) {
-      throw new Error(result.message);
+      throw new Error(data.message);
     }
     return data;
   };
-  return { createQuestion, likedQuestion, getQuestions, getQuestionById };
+
+  const getSearchQueston = async (text) => {
+    const res = await fetch(
+      `http://localhost:5000/api/question/search?q=${text}`,
+    );
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+    return data;
+  };
+  return { createQuestion, likedQuestion, getQuestions, getQuestionById, getSearchQueston };
 };

@@ -16,38 +16,70 @@ export default function NotifyPage() {
   useEffect(() => {
     const load = async () => {
       const data = await getNotification();
-      console.log("NOTIFICATIONS:", data);
       setNotification(data);
     };
     load();
   }, []);
+
   return (
-    <>
-      <div className="w-full max-w-lg flex flex-col gap-4">
-        {notification.length ? (
-          notification.map((n) => (
-            <div key={n._id}>
+    <div className="w-full max-w-lg flex flex-col gap-4">
+      {notification.length > 0 ? (
+        notification.map((n) => {
+          if (n.type === "like") {
+            return (
               <NotifiLikesCard
+                key={n._id}
                 userName={n.userId?.userName}
                 userAvatar={n.userId?.avatar}
                 title={n.questionId?.title}
+                type="post"
                 date={new Date(n.createdAt).toLocaleDateString()}
               />
-            </div>
-          ))
-        ) : (
-          <div className="flex flex-col items-center gap-4">
-            {" "}
-            <p className="text-lg">пока нет увидомлений... 👀</p>
-            <Link
-              href="/home/create"
-              className="text-lg underline underline-offset-4"
-            >
-              хотите начать обсужденеи?
-            </Link>
-          </div>
-        )}
-      </div>
-    </>
+            );
+          }
+
+          if (n.type === "answer") {
+            return (
+              <NotifiAnswerCard
+                key={n._id}
+                userName={n.userId?.userName}
+                targetUserName={n.targetUserId?.userName}
+                userAvatar={n.userId?.avatar}
+                questionTitle={n.questionId?.title}
+                questionId={n.questionId?._id}
+                answerdContent={n.answerId?.content}
+                replyCount={n.answerId?.replyCount}
+                answerId={n.answerId?._id}
+                likes={n.answerId?.likes}
+                date={new Date(n.createdAt).toLocaleDateString()}
+              />
+            );
+          }
+          if (n.type === "like_answer") {
+            return (
+              <NotifiLikesCard
+                key={n._id}
+                userName={n.userId?.userName}
+                userAvatar={n.userId?.avatar}
+                title={n.answerId?.content}
+                type="answer"
+                date={new Date(n.createdAt).toLocaleDateString()}
+              />
+            );
+          }
+          return null;
+        })
+      ) : (
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-lg">пока нет уведомлений... 👀</p>
+          <Link
+            href="/home/create"
+            className="text-lg underline underline-offset-4"
+          >
+            хотите начать обсуждение?
+          </Link>
+        </div>
+      )}
+    </div>
   );
 }

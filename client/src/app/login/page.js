@@ -12,8 +12,6 @@ import { useEffect } from "react";
 export default function Login() {
   const router = useRouter();
 
-  const { loadUser } = useUser();
-
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -45,13 +43,10 @@ export default function Login() {
         userPassword: password,
       });
 
-      console.log(data);
-
       if (data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userId", data.user._id);
 
-        await loadUser();
         router.push("/home");
       }
     } catch (error) {

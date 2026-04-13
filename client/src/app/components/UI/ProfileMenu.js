@@ -40,7 +40,7 @@ export default function ProfileMenu({ logout }) {
   // }, []);
 
   return (
-    <div className="absolute md:top-14 top-12 md:left-[-150px] left-[-80px] bg-white shadow-lg rounded-xl md:p-5 p-3 w-40 md:w-50">
+    <div className="absolute md:top-14 top-12 md:left-[-80px] lg:left-[-120px] left-[-40px] bg-white shadow-lg rounded-xl md:p-5 p-3 w-40 md:w-50">
       {user && (
         <div key={user._id} className="flex flex-col items-start gap-2">
           <div className="relative">

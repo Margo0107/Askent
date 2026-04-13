@@ -12,7 +12,7 @@ const NotificationShema = new mongoose.Schema({
   },
   answerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Answerd",
+    ref: "Answer",
   },
   questionId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -21,6 +21,10 @@ const NotificationShema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  isRead: {
+    type: Boolean,
+    default: false,
   },
 });
 module.exports = mongoose.model("Notification", NotificationShema);

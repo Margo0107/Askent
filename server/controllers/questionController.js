@@ -67,11 +67,13 @@ exports.likeQuestion = async (req, res) => {
     });
 
     if (!alredyLiked && questions.authorId.toString() !== userId && !existing) {
+      console.log("create notification");
       await Notification.create({
         type: "like",
         userId: req.userId,
         targetUserId: questions.authorId,
         questionId: questions._id,
+        isRead: false,
       });
     }
 
@@ -90,12 +92,35 @@ exports.likeQuestion = async (req, res) => {
 //answer question
 exports.answerQuestion = async (req, res) => {
   try {
-    const question = await Question.findById(req.params.id);
+    const question = await Question.findById(req.params.id).populate(
+      "authorId",
+      "userName avatar",
+    );
     if (!question) {
       return res.status(404).json({ message: "Question not found" });
     }
     res.json(question);
   } catch (error) {
     res.status(500).json({ message: "server error" });
+  }
+};
+exports.searchQuestion = async (req, res) => {
+  try {
+    const query = req.query.q;
+
+    if (!query || typeof query !== "string") {
+      return res.json([]);
+    }
+    const question = await Question.find({
+      $or: [
+        { title: { $regex: query, $options: "i" } },
+        { content: { $regex: query, $options: "i" } },
+      ],
+    }).limit(10);
+
+    res.json(question);
+  } catch (error) {
+    console.log("search error:", error);
+    res.status(500).json({ message: "search error" });
   }
 };

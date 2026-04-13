@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const path = require("path");
+const fs = require("fs");
 
 exports.register = async (req, res) => {
   try {
@@ -71,11 +73,19 @@ exports.uploadAvatar = async (req, res) => {
 
     const avatarPath = `/uploads/${req.file.filename}`;
 
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { avatar: avatarPath },
-      { new: true },
-    );
+    const user = await User.findById(userId);
+    if (user.avatar && !user.avatar.includes("default")) {
+      const oldPath = path.join(__dirname, "..", user.avatar);
+
+      fs.unlink(oldPath, (error) => {
+        if (error) {
+          console.log("error deleting old avatar: ", error);
+        }
+      });
+    }
+    user.avatar = avatarPath;
+    await user.save();
+
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: "server error" });
@@ -83,6 +93,6 @@ exports.uploadAvatar = async (req, res) => {
 };
 
 exports.getHome = async (req, res) => {
-  const user = await User.findById(req.user.userId).select("-userPassword");
+  const user = await User.findById(req.userId).select("-userPassword");
   res.json({ message: "welcome home", user });
 };

@@ -4,7 +4,7 @@ const answerShema = new mongoose.Schema(
   {
     questionId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "question",
+      ref: "Question",
       required: true,
     },
     authorId: {
@@ -18,7 +18,7 @@ const answerShema = new mongoose.Schema(
     },
     parentAnswerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "answer",
+      ref: "Answer",
       default: null,
     },
     likes: [
@@ -27,6 +27,10 @@ const answerShema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    replyCount: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

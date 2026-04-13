@@ -1,6 +1,6 @@
 export default function Avatar({ src, className, ...props }) {
   const url = src ? `http://localhost:5000${src}` : "/auth-img.png";
-  console.log("AVATAR URL:", url);
+
   return (
     <img
       src={url}

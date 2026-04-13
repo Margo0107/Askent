@@ -32,7 +32,6 @@ export default function HomePage() {
       try {
         const data = await getQuestions();
         setQuestions(data);
-        console.log(data);
       } catch (error) {
         console.error(error);
       }

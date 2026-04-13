@@ -1,24 +1,22 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import ProfileMenu from "./ProfileMenu";
-import { IoIosSearch } from "react-icons/io";
+import { FiSearch } from "react-icons/fi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import Sidebar from "./Sidebar";
-import { useAuthApi } from "../hooks/useAuthApi";
 import Avatar from "./Avatar";
 import { useUser } from "@/app/context/UserContext";
+import SearchModal from "./SearchModal";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [isOpen, setIsOpenBurger] = useState(false);
+  const [openSearch, setOpenSearch] = useState(false);
 
   const { user } = useUser();
-  console.log("user: ", user);
-  // const [user, setUser] = useState(null);
   const router = useRouter();
-  // const { uploadAvatar } = useAuthApi;
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -28,14 +26,10 @@ export default function Header() {
   const showAside = () => {
     setIsOpenBurger(!isOpen);
   };
+  const showModal = () => {
+    setOpenSearch(!openSearch);
+  };
 
-  // useEffect(() => {
-  //   const loadAvatar = async () => {
-  //     const data = await uploadAvatar();
-  //     setUser(data.user.avatar);
-  //   };
-  //   loadAvatar();
-  // }, []);
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-40 px-6 py-2 bg-white/20 backdrop-blur border-b-1 border-violet-300">
@@ -60,25 +54,18 @@ export default function Header() {
               className="xl:hidden visible cursor-pointer"
             />
             {/* search input question */}
-            {/* <input
-              placeholder="search question"
-              className="text-sm p-[8px] w-60 bg-violet-100 border-b-3 border-violet-600 focus:outline-none rounded-sm"
+            <FiSearch
+              onClick={showModal}
+              size={30}
+              className="cursor-pointer md:w-7 md:h-7 w-6 h-6"
             />
-            <IoIosSearch className="absolute top-3 left-53 w-5 h-5 cursor-pointer" /> */}
+
             <button
               className="cursor-pointer"
               onClick={() => {
-                console.log("click");
                 setOpen(!open);
               }}
             >
-              {/* <Image
-                className="rounded-full w-8 h-8 md:w-10 md:h-10"
-                src="/auth-img.png"
-                alt="icon-profile"
-                width={40}
-                height={40}
-              /> */}
               <Avatar
                 src={user?.avatar}
                 className="rounded-full w-8 h-8 md:w-10 md:h-10"
@@ -89,6 +76,7 @@ export default function Header() {
         </nav>
       </header>
       <Sidebar isOpen={isOpen} />
+      {openSearch && <SearchModal onClose={() => setOpenSearch(false)} />}
     </>
   );
 }

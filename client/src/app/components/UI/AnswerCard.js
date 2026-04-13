@@ -6,8 +6,8 @@ import { useAnswerApi } from "../hooks/useAnswer";
 import { RiPokerHeartsLine } from "react-icons/ri";
 import { RiPokerHeartsFill } from "react-icons/ri";
 import { TbMessageCircle } from "react-icons/tb";
-import { useUser } from "@/app/context/UserContext";
 import Avatar from "./Avatar";
+import { BiSolidRightArrow } from "react-icons/bi";
 
 export default function AnswerCard({
   answer,
@@ -16,12 +16,12 @@ export default function AnswerCard({
   handleLikes,
   questionsId,
   setAnswer,
+  getAnswer,
 }) {
   const [reply, setReply] = useState("");
   const [showReply, setShowReply] = useState(false);
 
   const { createAnswer } = useAnswerApi();
-  const { user } = useUser();
 
   const isLiked =
     userId && answer.likes.some((likeId) => likeId.toString() === userId);
@@ -33,19 +33,39 @@ export default function AnswerCard({
       content: reply,
       parentAnswerId: answer._id,
     });
-    setAnswer((prev) => [...prev, newReply]);
+    const update = await getAnswer(questionsId);
+    setAnswer(update);
+
     setReply("");
     setShowReply(false);
   };
 
+  const isReply = !!answer.parentAnswerId;
+
+  const parent = answers?.find((a) => a._id === answer.parentAnswerId);
+
   return (
     <>
-      <div className="p-2 rounded-lg bg-violet-100/50 border-t border-violet-300 flex flex-col gap-4">
+      <div
+        id={answer._id}
+        className={`p-2 rounded-lg bg-violet-100/50 border-t border-violet-300 flex flex-col gap-4 ${isReply ? "ml-4 mt-3 border-l-2" : ""}`}
+      >
         <div className="flex items-center gap-3 py-2">
-          <Avatar src={user?.avatar} className={`w-8 h-8 md:w-10 md:h-10`} />
+          <Avatar
+            src={answer?.authorId?.avatar}
+            className={`w-8 h-8 md:w-10 md:h-10`}
+          />
           <h3 className="sm:text-xl text-lg cursor-pointer">
             {answer?.authorId?.userName || "user"}
           </h3>
+          {isReply && parent && (
+            <>
+              <BiSolidRightArrow size={14} className="text-violet-800" />
+              <span className="text-violet-600">
+                {parent?.authorId.userName}
+              </span>
+            </>
+          )}
           <span className="text-sm text-slate-600">
             {new Date(answer.createdAt).toLocaleDateString()}
           </span>
@@ -72,7 +92,7 @@ export default function AnswerCard({
               <button onClick={() => setShowReply((prev) => !prev)}>
                 <TbMessageCircle size={23} />
               </button>
-              <span>{answer.lenght || 0}</span>
+              <span>{answer.replyCount || 0}</span>
             </div>
           </div>
         </div>
