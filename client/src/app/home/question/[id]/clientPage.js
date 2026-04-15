@@ -111,6 +111,7 @@ export default function ClientPage({ id }) {
               handleLikes={handleLikesAnswerd}
               questionsId={id}
               setAnswer={setAnswer}
+              getAnswer={getAnswer}
             />
             {replies.map((reply) => (
               <div key={reply._id}>
