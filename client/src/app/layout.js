@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
+  metadataBase: new URL("http://localhost:3000"),
   title: "Askent",
   description: "Ask questions, reply to others, and join discussions.",
   keywords: ["questions", "answers", "discussion", "forum"],
@@ -34,7 +35,6 @@ export const metadata = {
     type: "website",
   },
 };
-
 
 export default function RootLayout({ children }) {
   return (

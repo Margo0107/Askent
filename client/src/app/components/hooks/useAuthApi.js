@@ -1,13 +1,16 @@
 "use client";
 export const useAuthApi = () => {
   const login = async (data) => {
-    const res = await fetch("http://localhost:5000/api/author/login", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/author/login`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
     const result = await res.json();
 
     if (!res.ok) {
@@ -16,13 +19,16 @@ export const useAuthApi = () => {
     return result;
   };
   const register = async (data) => {
-    const res = await fetch("http://localhost:5000/api/author/register", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/author/register`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
     const result = await res.json();
 
     if (!res.ok) {
@@ -37,13 +43,16 @@ export const useAuthApi = () => {
 
     const token = localStorage.getItem("token");
 
-    const res = await fetch("http://localhost:5000/api/author/upload-avatar", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/author/upload-avatar`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
       },
-      body: formData,
-    });
+    );
 
     const result = await res.json();
 

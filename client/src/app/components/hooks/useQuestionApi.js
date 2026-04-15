@@ -4,14 +4,17 @@ export const useQuestionApi = () => {
   const createQuestion = async (data) => {
     const token = localStorage.getItem("token");
 
-    const res = await fetch("http://localhost:5000/api/question/create", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/question/create`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
 
     const result = await res.json();
 
@@ -24,12 +27,15 @@ export const useQuestionApi = () => {
   //getting a liked post
   const likedQuestion = async (id) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/question/${id}/like`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/question/${id}/like`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
     const result = await res.json();
 
     if (!res.ok) {
@@ -39,7 +45,7 @@ export const useQuestionApi = () => {
   };
   //receiving the creation of posts
   const getQuestions = async () => {
-    const res = await fetch("http://localhost:5000/api/question");
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/question`);
     const result = await res.json();
     if (!res.ok) {
       throw new Error(result.message);
@@ -49,11 +55,14 @@ export const useQuestionApi = () => {
 
   const getQuestionById = async (id) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/question/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/question/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
     const data = await res.json();
     if (!res.ok) {
       throw new Error(data.message);
@@ -63,7 +72,7 @@ export const useQuestionApi = () => {
 
   const getSearchQueston = async (text) => {
     const res = await fetch(
-      `http://localhost:5000/api/question/search?q=${text}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/question/search?q=${text}`,
     );
     const data = await res.json();
     if (!res.ok) {
@@ -71,5 +80,11 @@ export const useQuestionApi = () => {
     }
     return data;
   };
-  return { createQuestion, likedQuestion, getQuestions, getQuestionById, getSearchQueston };
+  return {
+    createQuestion,
+    likedQuestion,
+    getQuestions,
+    getQuestionById,
+    getSearchQueston,
+  };
 };

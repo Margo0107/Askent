@@ -1,8 +1,11 @@
 export async function generateMetadata({ params }) {
   const { id } = await params;
-  const res = await fetch(`http://localhost:5000/api/question/${id}`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/question/${id}`,
+    {
+      cache: "no-store",
+    },
+  );
   const question = await res.json();
   return {
     title: question.title,
