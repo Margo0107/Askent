@@ -50,7 +50,7 @@ export default function AnswerCard({
         id={answer._id}
         className={`p-2 rounded-lg bg-violet-100/50 border-t border-violet-300 flex flex-col gap-4 ${isReply ? "ml-4 mt-3 border-l-2" : ""}`}
       >
-        <div className="flex items-center gap-3 py-2">
+        <div className="flex items-center gap-x-2 gap-y-2 flex-wrap">
           <Avatar
             src={answer?.authorId?.avatar}
             className={`w-8 h-8 md:w-10 md:h-10`}
