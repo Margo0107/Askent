@@ -1,9 +1,12 @@
 export default function Avatar({ src, className, ...props }) {
-  const url = src ? `http://localhost:5000${src}` : "/auth-img.png";
-
+  const getAvatar = (avatar) => {
+    if (!avatar) return "/auth-img.png";
+    if (avatar.startsWith("http")) return avatar;
+    return `${process.env.NEXT_PUBLIC_API_URL}${avatar}`;
+  };
   return (
     <img
-      src={url}
+      src={getAvatar(src)}
       alt="avatar"
       className={`rounded-full ${className}`}
       {...props}
