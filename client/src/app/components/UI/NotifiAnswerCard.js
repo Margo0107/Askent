@@ -9,7 +9,6 @@ import { useAnswerApi } from "@/app/components/hooks/useAnswer";
 import { useState } from "react";
 import { useUser } from "@/app/context/UserContext";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 export default function NotifiAnswerCard(props) {
   const {
@@ -27,7 +26,6 @@ export default function NotifiAnswerCard(props) {
 
   const { likeAnswer } = useAnswerApi();
   const { user } = useUser();
-
 
   const [localLikes, setLocalLikes] = useState(likes || []);
   const isLiked = user
@@ -56,13 +54,17 @@ export default function NotifiAnswerCard(props) {
           </div>
           <div className="flex items-center flex-wrap gap-2">
             {" "}
-            <p className="md:text-2sm text-xs uppercase text-gray-400 whitespace-nowrap">your question</p>
+            <p className="md:text-2sm text-xs uppercase text-gray-400 whitespace-nowrap">
+              your question
+            </p>
             <h3 className="text-violet-600 text-sm break-words whitespace-pre-wrap">
               {questionTitle}
             </h3>
           </div>
           <div className="flex items-center gap-2">
-            <p className="md:text-2sm text-xs uppercase text-gray-400 whitespace-nowrap">Answer</p>
+            <p className="md:text-2sm text-xs uppercase text-gray-400 whitespace-nowrap">
+              Answer
+            </p>
             <h3 className="font-medium break-words whitespace-pre-wrap">
               {answerdContent}
             </h3>

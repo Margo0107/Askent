@@ -9,6 +9,7 @@ import Sidebar from "./Sidebar";
 import Avatar from "./Avatar";
 import { useUser } from "@/app/context/UserContext";
 import SearchModal from "./SearchModal";
+import Link from "next/link";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -35,17 +36,19 @@ export default function Header() {
       <header className="fixed top-0 left-0 w-full z-40 px-6 py-2 bg-white/20 backdrop-blur border-b-1 border-violet-300">
         <nav className="flex justify-between items-center">
           <div className="flex items-center">
-            <Image
-              className="rounded-full w-8 h-8 md:w-10 md:h-10"
-              src="/icon_askent.png"
-              alt="img-user-avatar"
-              width={40}
-              height={40}
-            />
+            <Link href="/home" className="cursor-pointer flex">
+              <Image
+                className="rounded-full w-8 h-8 md:w-10 md:h-10"
+                src="/icon_askent.png"
+                alt="img-user-avatar"
+                width={40}
+                height={40}
+              />
 
-            <h2 className="font-bold text-2xl lg:text-3xl tracking-[-1.5px] text-transparent bg-linear-65 from-indigo-800 to-fuchsia-500 bg-clip-text">
-              Askent
-            </h2>
+              <h2 className="font-bold text-2xl lg:text-3xl tracking-[-1.5px] text-transparent bg-linear-65 from-indigo-800 to-fuchsia-500 bg-clip-text">
+                Askent
+              </h2>
+            </Link>
           </div>
           <div className="flex items-center gap-5 relative">
             <RxHamburgerMenu
