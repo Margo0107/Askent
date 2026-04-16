@@ -70,9 +70,9 @@ export default function Login() {
       >
         {" "}
         <p className="text-center text-lg">
-          Нет аккаунта?{" "}
+          Don't have an account?{" "}
           <Link href={"/register"} className="text-violet-600">
-            Зарегистрироваться
+            Register
           </Link>
         </p>{" "}
       </AuthorForm>

@@ -68,9 +68,9 @@ export default function Register() {
       >
         {" "}
         <p className="text-center text-lg">
-          Уже есть аккаунт?{" "}
+          Already have an account?{" "}
           <Link href={"/login"} className="text-violet-600">
-            Войти
+            Login
           </Link>
         </p>
       </AuthorForm>
