@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
-const multer = require("multer");
+const cloudinary = require("../config/cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+// const multer = require("multer");
 
 const authorMiddleWare = require("../middleware/authorMiddleware");
 
@@ -11,6 +13,7 @@ const {
   getHome,
   uploadAvatar,
 } = require("../controllers/authorController");
+const multer = require("multer");
 
 router.post("/register", register);
 router.post("/login", login);
@@ -28,13 +31,21 @@ router.get("/me", authorMiddleWare, async (req, res) => {
 
 router.get("/home", authorMiddleWare, getHome);
 
-const storage = multer.diskStorage({
-  destination: "uploads/",
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
+// const storage = multer.diskStorage({
+//   destination: "uploads/",
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + "-" + file.originalname);
+//   },
+// });
+
+// const upload = multer({ storage });
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "avatars",
+    allowed_formats: ["jpg", "png", "jpeg"],
   },
 });
-
 const upload = multer({ storage });
 
 router.post(

@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const cloudinary = require("../config/cloudinary");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
@@ -71,19 +72,25 @@ exports.uploadAvatar = async (req, res) => {
       return res.status(400).json({ message: "no file uploaded" });
     }
 
-    const avatarPath = `/uploads/${req.file.filename}`;
+    // const avatarPath = `/uploads/${req.file.filename}`;
 
     const user = await User.findById(userId);
-    if (user.avatar && !user.avatar.includes("default")) {
-      const oldPath = path.join(__dirname, "..", user.avatar);
 
-      fs.unlink(oldPath, (error) => {
-        if (error) {
-          console.log("error deleting old avatar: ", error);
-        }
-      });
+    // if (user.avatar && !user.avatar.includes("default")) {
+    //   const oldPath = path.join(__dirname, "..", user.avatar);
+
+    //   fs.unlink(oldPath, (error) => {
+    //     if (error) {
+    //       console.log("error deleting old avatar: ", error);
+    //     }
+    //   });
+    // }
+
+    if (user.avatar && user.avatar.includes("cloudinary")) {
+      const publicId = user.avatar.split("/").pop().split(".")[0];
+      await cloudinary.uploader.destroy(`avatars/${publicId}`);
     }
-    user.avatar = avatarPath;
+    user.avatar = req.file.path;
     await user.save();
 
     res.json(user);
