@@ -67,6 +67,7 @@ exports.login = async (req, res) => {
 
 exports.uploadAvatar = async (req, res) => {
   try {
+    console.log("file", req.file);
     const userId = req.userId;
 
     if (!req.file) {
@@ -74,15 +75,18 @@ exports.uploadAvatar = async (req, res) => {
     }
     const user = await User.findById(userId);
 
-    if (user.avatarPoblicId) {
-      await cloudinary.uploader.destroy(user.avatarPoblicId);
+    if (user.avatarPublicId) {
+      await cloudinary.uploader.destroy(user.avatarPublicId);
     }
+
     user.avatar = req.file.path;
-    user.avatarPoblicId = req.file.fileName;
+    user.avatarPublicId = req.file.filename;
+
     await user.save();
 
     res.json(user);
   } catch (error) {
+    console.log("upload error: ", error);
     res.status(500).json({ message: "server error" });
   }
 };
