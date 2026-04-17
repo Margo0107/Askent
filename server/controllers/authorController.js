@@ -71,23 +71,10 @@ exports.uploadAvatar = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "no file uploaded" });
     }
-
-    // const avatarPath = `/uploads/${req.file.filename}`;
-
     const user = await User.findById(userId);
 
-    // if (user.avatar && !user.avatar.includes("default")) {
-    //   const oldPath = path.join(__dirname, "..", user.avatar);
-
-    //   fs.unlink(oldPath, (error) => {
-    //     if (error) {
-    //       console.log("error deleting old avatar: ", error);
-    //     }
-    //   });
-    // }
-
-    if (user.avatar && user.avatar.includes("cloudinary")) {
-      const publicId = user.avatar.split("/").pop().split(".")[0];
+    if (user.avatar && user.avatar.includes("res.cloudinary.com")) {
+      const publicId = user.avatar.split("/").slice(-2).join("/").split(".")[0];
       await cloudinary.uploader.destroy(`avatars/${publicId}`);
     }
     user.avatar = req.file.path;

@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require("../models/User");
 const cloudinary = require("../config/cloudinary");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
-// const multer = require("multer");
 
 const authorMiddleWare = require("../middleware/authorMiddleware");
 
@@ -31,14 +30,6 @@ router.get("/me", authorMiddleWare, async (req, res) => {
 
 router.get("/home", authorMiddleWare, getHome);
 
-// const storage = multer.diskStorage({
-//   destination: "uploads/",
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + "-" + file.originalname);
-//   },
-// });
-
-// const upload = multer({ storage });
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
