@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs");
+const url = require("url");
 
 exports.register = async (req, res) => {
   try {
@@ -74,10 +75,13 @@ exports.uploadAvatar = async (req, res) => {
     const user = await User.findById(userId);
 
     if (user.avatar && user.avatar.includes("res.cloudinary.com")) {
-      const publicId = user.avatar.split("/").slice(-2).join("/").split(".")[0];
-      await cloudinary.uploader.destroy(`avatars/${publicId}`);
+      const parts = user.avatar.split("/");
+      const fileName = parts.slice(-2).join("/");
+      const publicId = fileName.split(".")[0];
+
+      await cloudinary.uploader.destroy(publicId);
     }
-    user.avatar = req.file.path;
+    user.avatar = req.file.path || req.file.url;
     await user.save();
 
     res.json(user);
