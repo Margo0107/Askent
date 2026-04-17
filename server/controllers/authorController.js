@@ -74,14 +74,11 @@ exports.uploadAvatar = async (req, res) => {
     }
     const user = await User.findById(userId);
 
-    if (user.avatar && user.avatar.includes("res.cloudinary.com")) {
-      const parts = user.avatar.split("/");
-      const fileName = parts.slice(-2).join("/");
-      const publicId = fileName.split(".")[0];
-
-      await cloudinary.uploader.destroy(publicId);
+    if (user.avatarPoblicId) {
+      await cloudinary.uploader.destroy(user.avatarPoblicId);
     }
-    user.avatar = req.file.path || req.file.url;
+    user.avatar = req.file.path;
+    user.avatarPoblicId = req.file.fileName;
     await user.save();
 
     res.json(user);
