@@ -17,7 +17,7 @@ const userShema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    default: "/uploads/auth-img.png",
+    default: "https://via.placeholder.com/150",
   },
 });
 module.exports = mongoose.model("User", userShema);

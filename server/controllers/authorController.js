@@ -1,10 +1,7 @@
 const User = require("../models/User");
-const cloudinary = require("../config/cloudinary");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const path = require("path");
-const fs = require("fs");
-const url = require("url");
+const supabase = require("../config/supabase");
 
 exports.register = async (req, res) => {
   try {
@@ -67,21 +64,44 @@ exports.login = async (req, res) => {
 
 exports.uploadAvatar = async (req, res) => {
   try {
-    console.log("file", req.file);
+    console.log("FILE:", req.file);
+
     const userId = req.userId;
 
     if (!req.file) {
       return res.status(400).json({ message: "no file uploaded" });
     }
-    const user = await User.findById(userId);
 
-    if (user.avatarPublicId) {
-      await cloudinary.uploader.destroy(user.avatarPublicId);
+    const file = req.file;
+
+    if (!file.buffer) {
+      return res.status(500).json({ message: "file buffer missing" });
     }
 
-    user.avatar = req.file.path;
-    user.avatarPublicId = req.file.filename;
+    const user = await User.findById(userId);
 
+    if (user.avatar && user.avatar.includes("supabase")) {
+      const oldFileName = user.avatar.split("/").pop();
+      await supabase.storage.from("avatars").remove([oldFileName]);
+    }
+
+    const ext = file.originalname.split(".").pop();
+    const fileName = `avatar-${userId}-${Date.now()}.${ext}`;
+
+    const { error } = await supabase.storage
+      .from("avatars")
+      .upload(fileName, file.buffer, {
+        contentType: file.mimetype,
+      });
+
+    if (error) {
+      console.log("SUPABASE ERROR:", error);
+      return res.status(500).json({ message: "upload error" });
+    }
+
+    const publicUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/avatars/${fileName}`;
+
+    user.avatar = publicUrl;
     await user.save();
 
     res.json(user);
