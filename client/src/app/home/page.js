@@ -61,12 +61,12 @@ export default function HomePage() {
       ) : (
         <div className="flex flex-col items-center gap-4">
           {" "}
-          <p className="text-lg">пока нет вопросов... 👀</p>
+          <p className="text-lg">no questions yet... 👀</p>
           <Link
             href="/home/create"
             className="text-lg underline underline-offset-4"
           >
-            хотите начать обсужденеи?
+            Want to start a discussion?
           </Link>
         </div>
       )}

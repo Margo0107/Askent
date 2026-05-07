@@ -25,7 +25,7 @@ export default function NotifiLikesCard({
             <p>liked your {type === "answer" ? "answer" : "post"}</p>
             <span className="text-slate-600 md:text-sm text-xs">{date}</span>
           </div>
-          <h3 className="text-slate-600 break-words whitespace-pre-wrap">
+          <h3 className="text-slate-600 wrap-break-word whitespace-pre-wrap">
             {title}
           </h3>
         </div>

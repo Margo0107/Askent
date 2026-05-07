@@ -99,9 +99,11 @@ exports.uploadAvatar = async (req, res) => {
       return res.status(500).json({ message: "upload error" });
     }
 
-    const publicUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/avatars/${fileName}`;
+    const { data } = supabase.storage
+      .from("avatars")
+      .getPublicUrl(fileName);
 
-    user.avatar = publicUrl;
+    user.avatar = data.publicUrl;
     await user.save();
 
     res.json(user);

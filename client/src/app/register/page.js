@@ -56,7 +56,7 @@ export default function Register() {
     <>
       <AuthorForm
         titleH1="Registragion"
-        titleBtn="Sing In"
+        titleBtn="Sign In"
         onSubmit={handlRegister}
         nameValue={userName}
         emailValue={email}

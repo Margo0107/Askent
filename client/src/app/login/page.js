@@ -58,7 +58,7 @@ export default function Login() {
     <>
       <AuthorForm
         titleH1="Login"
-        titleBtn="Sing In"
+        titleBtn="Sign In"
         onSubmit={handleLogin}
         nameValue={userName}
         emailValue={email}
@@ -70,7 +70,7 @@ export default function Login() {
       >
         {" "}
         <p className="text-center text-lg">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href={"/register"} className="text-violet-600">
             Register
           </Link>

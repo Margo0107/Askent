@@ -11,7 +11,7 @@ export default function ProfileMenu({ logout }) {
   const fileInputFef = useRef(null);
   const { uploadAvatar } = useAuthApi();
 
-  const { user, setUser } = useUser();
+  const { user, setUser, loadUser } = useUser();
 
   const handleClick = () => {
     fileInputFef.current.click();
@@ -21,8 +21,13 @@ export default function ProfileMenu({ logout }) {
     const file = e.target.files[0];
     if (!file) return;
 
-    const updateUser = await uploadAvatar(file);
-    setUser(updateUser);
+    try {
+      await uploadAvatar(file);
+      // Переподгружаем данные пользователя с сервера чтобы убедиться, что аватар сохранился
+      await loadUser();
+    } catch (error) {
+      console.error("Ошибка при загрузке аватара:", error);
+    }
   };
 
   // useEffect(() => {

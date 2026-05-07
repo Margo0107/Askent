@@ -77,7 +77,7 @@ export default function ClientPage({ id }) {
   const replies = answer.filter((a) => a.parentAnswerId);
 
   return (
-    <div className="w-full flex flex-col justify-between gap-11 bg-white/60 backdrop-blur-md p-4 py-5 rounded-lg">
+    <div className="w-full flex flex-col justify-between gap-8 bg-white/60 backdrop-blur-md p-4 py-5 rounded-lg">
       <Link href="/home">
         <BsArrowLeftCircleFill className="text-violet-500 w-8 h-8 transition duration-300 hover:text-violet-400" />
       </Link>
